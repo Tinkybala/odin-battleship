@@ -17,30 +17,57 @@ player2.getBoard().setShip(coord(4,5), coord(9,5), 2);
 
 
 configure();
-
-action();
-turn++;
+hide();
 
 
 
-//action
-function action(){
-    console.log(turn);
+
+//hides player ui depending on turn
+function hide(){
     const rightCells = document.querySelectorAll("#right .cell");
     const leftCells = document.querySelectorAll("#left .cell");
+
     if(turn % 2 === 1){
         rightCells.forEach(cell => {
             if(cell.style.backgroundColor !== 'red' && cell.style.backgroundColor !== "black") cell.style.backgroundColor = "grey";
+           
         });
-        leftCells.forEach(cell => cell.removeEventListener("click"));
-
+        let board = document.querySelector("#right .board");
+        for(let i=0; i < 100; i++){
+            let cell = rightCells[i];
+            cell.addEventListener("click", () => {
+                action(cell, player2.getBoard(), coord(i%10, Math.floor(i/10)), board);
+                hide();
+        });
+        }
+        
     }
     else{
         leftCells.forEach(cell => {
             if(cell.style.backgroundColor !== 'red' && cell.style.backgroundColor !== "black") cell.style.backgroundColor = "grey";
         });
-
+        let board = document.querySelector("#left .board");
+        for(let i=0; i < 100; i++){
+            let cell = leftCells[i];
+            cell.addEventListener("click", () =>{
+                action(cell, player1.getBoard(), coord(i%10, Math.floor(i/10)), board);
+                hide();
+        });
+        }
+        
     }
+}
+
+
+function action(cell, gameboard, coord, board){
+    let result = gameboard.receiveAttack(coord);
+    if(result >= 0) cell.style.backgroundColor = 'red';
+    else cell.style.backgroundColor = 'black'; 
+    let newBoard =  displayBoard(gameboard, 10);
+    let parent = board.parentElement;
+    parent.removeChild(board)
+    parent.appendChild(newBoard);
+    turn++;
 }
 
 
@@ -79,21 +106,7 @@ function displayBoard(gameboard, size){
             cell.addEventListener("pointerenter", () => cell.style.opacity = '0.7');
             cell.addEventListener("pointerleave", () => cell.style.opacity = '1');
 
-            if(matrix[i][j] !== -2 && matrix[i][j] !== Infinity){
-                cell.addEventListener("click", () =>{
-                    let result = gameboard.receiveAttack(coord(j, i));
-                    if(result >= 0) cell.style.backgroundColor = 'red';
-                    else cell.style.backgroundColor = 'black'; 
-                    let newBoard =  displayBoard(gameboard, 10);
-                    let parent = board.parentElement;
-                    setTimeout(() => {
-                        parent.removeChild(board)
-                        parent.appendChild(newBoard);
-                        action();
-                        turn++;
-                    }, 3000);
-                });
-            }
+            
             rowDiv.appendChild(cell);
         }
     }
