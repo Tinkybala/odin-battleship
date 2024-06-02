@@ -15,6 +15,7 @@ const { options } = require('yargs');
         inject: 'body'
     }),
    ],
+   devtool: "source-map",
    module: {
      rules: [
        {

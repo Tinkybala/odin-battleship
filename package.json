@@ -16,7 +16,6 @@
     "ansi-styles": "^4.3.0",
     "anymatch": "^3.1.3",
     "argparse": "^1.0.10",
-    "babel-jest": "^29.7.0",
     "babel-plugin-istanbul": "^6.1.1",
     "babel-plugin-jest-hoist": "^29.6.3",
     "babel-preset-current-node-syntax": "^1.0.1",
@@ -266,14 +265,21 @@
     "yocto-queue": "^0.1.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.24.6",
+    "@babel/preset-env": "^7.24.6",
     "@eslint/js": "^9.2.0",
+    "babel-jest": "^29.7.0",
+    "babel-loader": "^9.1.3",
+    "css-loader": "^7.1.2",
     "eslint": "^9.2.0",
     "globals": "^15.2.0",
+    "style-loader": "^4.0.0",
     "webpack": "^5.91.0",
     "webpack-cli": "^5.1.4"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "watch": "jest --watch *.js"
   },
   "keywords": [],
   "author": "",
